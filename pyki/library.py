@@ -32,6 +32,7 @@ class SchematicLibrary:
                 c = Component()
                 c.from_file(component_data)
                 self.components.append(c)
+                component_data = []
 
 
 

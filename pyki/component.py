@@ -226,21 +226,16 @@ class Component:
         s = "{name} - {reference}\n".format(name = self.name,
                                             reference = self.reference)
         for arc in self.arcs:
-            s = s + arc.to_file() + "\n"
-
+            pass
         for circle in self.circles:
-            s = s + circle.to_file() + "\n"
-
+            pass
         for polyline in self.polylines:
-            s = s + polyline.to_file() + "\n"
-
+            pass
         for rect in self.rectangles:
-            s = s + rect.to_file() + "\n"
-
+            pass
         for text in self.texts:
-            s = s + text.to_file() + "\n"
-
+            pass
         for pin in self.pins:
-            s = s + pin.to_file() + "\n"
+            s = "%s\t%d: %s\n" % (s, pin.num, pin.name)
 
         return s
