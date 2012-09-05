@@ -14,7 +14,8 @@ class SchematicLibrary:
 
     def write(self):
         self.file = open(self.filename, 'w')
-        self.file.writelines(self.to_file())
+        for line in self.to_file():
+            self.file.write(line + "\n")
         self.file.close()
 
     def from_file(self, file_data):
