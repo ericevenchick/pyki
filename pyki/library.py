@@ -1,22 +1,21 @@
 from pyki.component import Component
 
 class SchematicLibrary:
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self):
         self.version = None
         self.encoding = None
         self.components = []
 
-    def open(self):
-        self.file = open(self.filename, 'r')
-        self.from_file(self.file.readlines())
-        self.file.close()
+    def open(self, filename):
+        f= open(filename, 'r')
+        self.from_file(f.readlines())
+        f.close()
 
-    def write(self):
-        self.file = open(self.filename, 'w')
+    def write(self, filename):
+        f= open(filename, 'w')
         for line in self.to_file():
-            self.file.write(line + "\n")
-        self.file.close()
+            f.write(line + "\n")
+        f.close()
 
     def from_file(self, file_data):
         lib_params = file_data[0].strip().split(" ")
