@@ -65,12 +65,14 @@ class Component:
                 else:
                     self.draw_pinname = False
 
-                if params[7].upper() == "L":
+                self.unit_count = params[7]
+
+                if params[8].upper() == "L":
                     self.units_locked = True
                 else:
                     self.units_locked = False
 
-                self.option_flag = params[8]
+                self.option_flag = params[9]
 
             # F0 = reference definition
             if cmd == "F0":
@@ -155,7 +157,7 @@ class Component:
         else:
             units_locked_str = "F"
 
-        file_data.append(("DEF {name} {reference} 0 {text_offset} "
+        file_data.append(("DEF {name} {reference} 0 {text_offset:g} "
                           "{draw_pinnumber} {draw_pinname} {unit_count} "
                           "{units_locked} {option_flag}"
                           ).format(name = self.name,
@@ -171,7 +173,7 @@ class Component:
             ref_visible_str = "V"
         else:
             ref_visible_str = "I"
-        file_data.append(("F0 {reference} {posx} {posy} {text_size} "
+        file_data.append(("F0 \"{reference}\" {posx:g} {posy:g} {text_size:g} "
                           "{text_orientation} {visible} {htext_justify} "
                           "{vtext_justify}"
                           ).format(reference = self.reference,
@@ -187,7 +189,7 @@ class Component:
             name_visible_str = "V"
         else:
             name_visible_str = "I"
-        file_data.append(("F1 {name} {posx} {posy} {text_size} "
+        file_data.append(("F1 \"{name}\" {posx:g} {posy:g} {text_size:g} "
                           "{text_orientation} {visible} {htext_justify} "
                           "{vtext_justify}"
                           ).format(name = self.name,

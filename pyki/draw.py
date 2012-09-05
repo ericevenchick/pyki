@@ -22,8 +22,8 @@ class Arc:
         self.endy = float(params[9])
 
     def to_file(self):
-        s = ("A {posx} {posy} {radius} {start_angle} {end_angle} {startx} "
-             "{starty} {endx} {endy}"
+        s = ("A {posx:g} {posy:g} {radius:g} {start_angle:g} {end_angle:g} "
+             "{startx:g} {starty:g} {endx:g} {endy:g}"
             ).format(posx = self.posx,
                      posy = self.posy,
                      radius = self.radius,
@@ -47,9 +47,9 @@ class Circle:
         self.radius = float(params[3])
 
     def to_file(self):
-        s = ("C {posx} {posy} {radius}").format(posx = self.posx,
-                                                posy = self.posy,
-                                                radius = self.radius)
+        s = ("C {posx:g} {posy:g} {radius:g}").format(posx = self.posx,
+                                                      posy = self.posy,
+                                                      radius = self.radius)
 
 class Polyline:
     def __init__(self):
@@ -78,10 +78,13 @@ class Rectangle:
         self.endy = float(params[4])
 
     def to_file(self):
-        s = ("S {startx} {starty} {endx} {endy}").format(startx = self.startx,
-                                                         starty = self.starty,
-                                                         endx = self.endx,
-                                                         endy = self.endy)
+        # TODO implement last 4 params
+        s = ("S {startx:g} {starty:g} "
+             "{endx:g} {endy:g} 0 1 0 N"
+            ).format(startx = self.startx,
+                     starty = self.starty,
+                     endx = self.endx,
+                     endy = self.endy)
         return s
 
 class Text:
@@ -98,7 +101,7 @@ class Text:
         self.text = params[4]
 
     def to_file(self):
-        s = ("T {direction} {text_size} {text_type} {text}"
+        s = ("T {direction} {text_size:g} {text_type} {text}"
             ).format(direction = self.direction,
                      text_size = self.text_size,
                      text_type = self.text_type,
@@ -117,6 +120,7 @@ class Pin:
         self.num_text_size = 0
         self.electrical_type = ""
         self.pin_type = ""
+        self.io_type = ""
 
     def from_file(self, params):
         self.name = params[1]
@@ -129,10 +133,12 @@ class Pin:
         self.num_text_size = float(params[8])
         self.electrical_type = params[9]
         self.pin_type = params[10]
+        self.io_type = params[11]
 
     def to_file(self):
-        s = ("X {name} {num} {posx} {posy} {length} {direction} "
-             "{name_text_size} {num_text_size} {electrical_type} {pin_type}"
+        s = ("X {name} {num} {posx:g} {posy:g} {length:g} {direction} "
+             "{name_text_size:g} {num_text_size:g} {electrical_type} "
+             "{pin_type} {io_type}"
              ).format(name = self.name,
                       num = self.num,
                       posx = self.posx,
@@ -142,5 +148,6 @@ class Pin:
                       name_text_size = self.name_text_size,
                       num_text_size = self.num_text_size,
                       electrical_type = self.electrical_type,
-                      pin_type = self.pin_type)
+                      pin_type = self.pin_type,
+                      io_type = self.io_type)
         return s
