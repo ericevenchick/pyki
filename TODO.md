@@ -1,6 +1,9 @@
 TODO for PyKi
 =============
 
+### Schematic Files ###
+Add import/export for FPLIST and ALIAS
+
 ### DCM Files ###
 * Import DCM files along with schematic LIB files
 * Export DCM files as well
@@ -15,4 +18,4 @@ TODO for PyKi
 * Figure out a good method to store components in a database rather than a 
   library file.
 
-
+### Footprint Libraries ###

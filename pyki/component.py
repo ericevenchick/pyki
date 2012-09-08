@@ -31,6 +31,11 @@ class Component:
         self.name_visible = True
         self.name_htext_justify = "C"
         self.name_vtext_justify = "C"
+        # Alias params
+        # TODO
+
+        # Footprint List
+        self.footprints = []
 
         # draw objects
         self.arcs = []
@@ -41,6 +46,7 @@ class Component:
         self.pins = []
 
     def from_file(self, file_data):
+        in_footprints = False
         for line in file_data:
             # split by spaces to get params
             params = line.strip().split(" ")
@@ -48,8 +54,16 @@ class Component:
             # get the command of the line, ie, the first param
             cmd = params[0]
 
+            # FPLIST = footprint list.
+            if cmd == "$FPLIST":
+                in_footprints = True
+            elif in_footprints:
+                self.footprints.append(line)
+            elif cmd == "$ENDFPLIST":
+                in_footprints = False
+
             # DEF = component definition
-            if cmd == "DEF":
+            elif cmd == "DEF":
                 self.name = params[1]
                 self.reference = params[2]
                 # params[3] is reserved, always 0
@@ -75,7 +89,7 @@ class Component:
                 self.option_flag = params[9]
 
             # F0 = reference definition
-            if cmd == "F0":
+            elif cmd == "F0":
                 self.ref_posx = float(params[2])
                 self.ref_posy = float(params[3])
                 self.ref_text_size = float(params[4])
@@ -90,7 +104,7 @@ class Component:
                 self.ref_vtext_justify = params[8]
 
             # F1 = name definition
-            if cmd == "F1":
+            elif cmd == "F1":
                 self.name_posx = float(params[2])
                 self.name_posy = float(params[3])
                 self.name_text_size = float(params[4])
@@ -105,37 +119,37 @@ class Component:
                 self.name_vtext_justify = params[8]
 
             # A = arc definition
-            if cmd == "A":
+            elif cmd == "A":
                 arc = Arc()
                 arc.from_file(params)
                 self.arcs.append(arc)
 
             # C = circle definition
-            if cmd == "C":
+            elif cmd == "C":
                 circle = Circle()
                 circle.from_file(params)
                 self.circles.append(circle)
 
             # P = polyline definition
-            if cmd == "P":
+            elif cmd == "P":
                 poly = Polyline()
                 poly.from_file(params)
                 self.polylines.append(poly)
 
             # S = rectangle definition
-            if cmd == "S":
+            elif cmd == "S":
                 rect = Rectangle()
                 rect.from_file(params)
                 self.rectangles.append(rect)
 
             # T = text definition
-            if cmd == "T":
+            elif cmd == "T":
                 text = Text()
                 text.from_file(params)
                 self.texts.append(text)
 
             # pin definition
-            if cmd == "X":
+            elif cmd == "X":
                 pin = Pin()
                 pin.from_file(params)
                 self.pins.append(pin)
