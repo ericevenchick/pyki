@@ -1,4 +1,5 @@
 from pyki.draw import *
+import shlex
 
 class Component:
     def __init__(self):
@@ -33,6 +34,7 @@ class Component:
         self.name_vtext_justify = "C"
         # Alias params
         # TODO
+        self.alias = None
 
         # Footprint List
         self.footprints = []
@@ -48,8 +50,10 @@ class Component:
     def from_file(self, file_data):
         in_footprints = False
         for line in file_data:
+            # strip whitespace
+            line = line.strip()
             # split by spaces to get params
-            params = line.strip().split(" ")
+            params = shlex.split(line)
 
             # get the command of the line, ie, the first param
             cmd = params[0]
@@ -61,6 +65,11 @@ class Component:
                 self.footprints.append(line)
             elif cmd == "$ENDFPLIST":
                 in_footprints = False
+
+            # ALIAS = alias definition
+            elif cmd == "ALIAS":
+                # TODO
+                self.alias = line
 
             # DEF = component definition
             elif cmd == "DEF":
@@ -214,6 +223,15 @@ class Component:
                                    visible = name_visible_str,
                                    htext_justify = self.name_htext_justify,
                                    vtext_justify = self.name_vtext_justify))
+
+        if self.alias != None:
+            file_data.append(self.alias)
+
+        if len(self.footprints) != 0:
+            file_data.append("$FPLIST")
+            for fp in self.footprints:
+                file_data.append(fp)
+            file_data.append("$ENDFPLIST")
 
         file_data.append("DRAW")
         for arc in self.arcs:

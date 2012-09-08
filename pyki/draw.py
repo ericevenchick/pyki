@@ -50,6 +50,7 @@ class Circle:
         s = ("C {posx:g} {posy:g} {radius:g}").format(posx = self.posx,
                                                       posy = self.posy,
                                                       radius = self.radius)
+        return s
 
 class Polyline:
     def __init__(self):
@@ -61,8 +62,7 @@ class Polyline:
         pass
 
     def to_file(self):
-        # TODO
-        pass
+        return "P"
 
 class Rectangle:
     def __init__(self):
@@ -134,11 +134,15 @@ class Pin:
         self.electrical_type = params[9]
         self.pin_type = params[10]
         self.io_type = params[11]
+        try:
+            self.io_type2 = params[12]
+        except IndexError:
+            self.io_type2 = ""
 
     def to_file(self):
         s = ("X {name} {num} {posx:g} {posy:g} {length:g} {direction} "
              "{name_text_size:g} {num_text_size:g} {electrical_type} "
-             "{pin_type} {io_type}"
+             "{pin_type} {io_type} {io_type2}"
              ).format(name = self.name,
                       num = self.num,
                       posx = self.posx,
@@ -149,5 +153,6 @@ class Pin:
                       num_text_size = self.num_text_size,
                       electrical_type = self.electrical_type,
                       pin_type = self.pin_type,
-                      io_type = self.io_type)
+                      io_type = self.io_type,
+                      io_type2 = self.io_type2)
         return s
