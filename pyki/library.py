@@ -20,7 +20,11 @@ class SchematicLibrary:
     def from_file(self, file_data):
         lib_params = file_data[0].strip().split(" ")
         self.version = lib_params[2]
-        self.encoding = file_data[1].strip().split(" ")[1]
+        try:
+            self.encoding = file_data[1].strip().split(" ")[1]
+        except IndexError:
+            # could not get version
+            self.encoding = None
 
         in_component = False
         component_data = []
